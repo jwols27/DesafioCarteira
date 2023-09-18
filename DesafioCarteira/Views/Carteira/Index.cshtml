@@ -1,9 +1,42 @@
 ﻿
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Carteira";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="main-container main-offcenter">
+    <div class="card p-4" data-bind="visible: SelectedPessoa()">
+        <div class="my-2">
+            <span class="display-6" data-bind="text: PessoaNome() + ','"></span> seu saldo é de:
+            <strong data-bind="text: formatNumber(PessoaSaldo())"></strong>.
+            <p class="text-danger my-1">Seu saldo está abaixo do limite!</p>
+        </div>
+        <div class="button-control">
+            <button class="btn btn-primary">Movimentar</button>
+            <button class="btn btn-secondary">Consultar</button>
+        </div>
+    </div>
+    <div class="card p-4">
+        <div class="my-2 form-group" data-bind="visible: !SelectedPessoa()">
+            <label class="control-label font-weight-bold">Pessoa</label>
+            <select class="custom-select form-control"
+                    data-bind="options: Pessoas, optionsText: 'nome',
+                    optionsCaption: SelectedPessoa() ? undefined : 'Selecionar pessoa',
+                    value: SelectedPessoa, valueAllowUnset: true, event: { change: updatePessoaInfo }">
+            </select>
+        </div>
+        <div id="pessoa-crud" class="button-control">
+            <button class="btn btn-outline-primary">Criar pessoa</button>
+            <button class="btn btn-outline-dark">Editar pessoa</button>
+            <button class="btn btn-outline-danger">Apagar pessoa</button>
+            <button class="btn btn-outline-info">Ver pessoas</button>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/viewmodels/CarteiraVM.js"></script>
+<script src="~/js/requests/GetPessoas.js"></script>
+<script>
+    $(document).ready(function () {
+        getPessoas();
+    });
+</script>
