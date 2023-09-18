@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DesafioCarteira.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using System.Collections.Generic;
 
 namespace DesafioCarteira
 {
@@ -25,21 +28,23 @@ namespace DesafioCarteira
             services.AddControllersWithViews();
 
             services.AddScoped<SeedingService>();
+            services.AddScoped<CarteiraService>();
+            services.AddScoped<PessoasService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
         {
-            /*
-            var enUs = new CultureInfo("en-US");
+
+            var ptBR = new CultureInfo("pt-BR");
             var localizationOptions = new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture(enUs),
-                SupportedCultures = new List<CultureInfo> { enUs },
-                SupportedUICultures = new List<CultureInfo> { enUs },
+                DefaultRequestCulture = new RequestCulture(ptBR),
+                SupportedCultures = new List<CultureInfo> { ptBR },
+                SupportedUICultures = new List<CultureInfo> { ptBR },
             };
             app.UseRequestLocalization(localizationOptions);
-            */
+
 
             if (env.IsDevelopment())
             {
