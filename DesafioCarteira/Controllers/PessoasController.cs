@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DesafioCarteira.Services;
+using DesafioCarteira.Models;
+using System.Globalization;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace DesafioCarteira.Controllers
 {
@@ -22,6 +26,14 @@ namespace DesafioCarteira.Controllers
         {
             var pessoas = await _pessoasService.FindAll();
             return Json(pessoas);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(string pessoa)
+        {
+            Pessoa converted = JsonConvert.DeserializeObject<Pessoa>(pessoa);
+            return Json(converted);
         }
     }
 }
