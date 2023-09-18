@@ -13,9 +13,8 @@ namespace DesafioCarteira.Models
 
         public Pessoa () { }
 
-        public Pessoa(int id, string nome, string email, double salario, double limite, double minimo, double saldo)
+        public Pessoa(string nome, string email, double salario, double limite, double minimo, double saldo)
         {
-            Id = id;
             Nome = nome;
             Email = email;
             Salario = salario;

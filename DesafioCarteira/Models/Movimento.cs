@@ -10,5 +10,14 @@ namespace DesafioCarteira.Models
         public virtual string Descricao { get; set; }
         public virtual double Valor { get; set; }
 
+        protected Movimento() { }
+
+        protected Movimento(Pessoa pessoa, DateTime data, string descricao, double valor)
+        {
+            Pessoa = pessoa;
+            Data = data;
+            Descricao = descricao;
+            Valor = valor;
+        }
     }
 }
