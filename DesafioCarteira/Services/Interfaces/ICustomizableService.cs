@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace DesafioCarteira.Services.Interfaces
 {
-    public interface IService<T>
+    public interface ICustomizableService<T>
     {
         Task Add(T item);
-        Task Remove(int id);
+        Task Remove<U>(int id);
         Task Update(T item);
-        Task<T> FindById(int id);
+        Task<U> FindById<U>(int id);
         Task<IEnumerable<T>> FindAll();
         Task<bool> HasAny();
     }

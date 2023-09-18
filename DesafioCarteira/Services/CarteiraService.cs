@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DesafioCarteira.Services
 {
-    public class CarteiraService : IService<Movimento>
+    public class CarteiraService : ICustomizableService<Movimento>
     {
         private ISession _session;
         public CarteiraService(ISession session) => _session = session;
