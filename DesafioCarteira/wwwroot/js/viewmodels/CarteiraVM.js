@@ -35,4 +35,4 @@
     }
 }
 
-ko.applyBindings(Carteira);
+ko.applyBindings(Carteira, document.getElementById('carteira-view'));

@@ -3,20 +3,25 @@
     ViewData["Title"] = "Carteira";
 }
 
-<div class="main-container main-offcenter">
-    <div class="card p-4" data-bind="visible: SelectedPessoa()">
+<div id="carteira-view" class="main-container main-offcenter">
+    <!-- ko if: SelectedPessoa() -->
+    <div class="card p-4">
         <div class="my-2">
             <span class="display-6" data-bind="text: PessoaNome() + ','"></span> seu saldo é de:
             <strong data-bind="text: formatNumber(PessoaSaldo())"></strong>.
-            <p class="text-danger my-1">Seu saldo está abaixo do limite!</p>
+            <!-- ko if: ChecarMinimo -->
+            <p data-bind="if: ChecarMinimo" class="text-danger my-1">Seu saldo está abaixo do limite!</p>
+            <!-- /ko -->
         </div>
-        <div class="button-control">
+        <div class="button-control flex-fill-children">
             <button class="btn btn-primary">Movimentar</button>
             <button class="btn btn-secondary">Consultar</button>
         </div>
     </div>
+    <!-- /ko -->
     <div class="card p-4">
-        <div class="my-2 form-group" data-bind="visible: !SelectedPessoa()">
+        <!-- ko if: !SelectedPessoa() -->
+        <div class="my-2 form-group">
             <label class="control-label font-weight-bold">Pessoa</label>
             <select class="custom-select form-control"
                     data-bind="options: Pessoas, optionsText: 'nome',
@@ -24,19 +29,24 @@
                     value: SelectedPessoa, valueAllowUnset: true, event: { change: updatePessoaInfo }">
             </select>
         </div>
-        <div id="pessoa-crud" class="button-control">
-            <button class="btn btn-outline-primary">Criar pessoa</button>
-            <button class="btn btn-outline-dark">Editar pessoa</button>
-            <button class="btn btn-outline-danger">Apagar pessoa</button>
-            <button class="btn btn-outline-info">Ver pessoas</button>
+        <!-- /ko -->
+        <div id="pessoa-crud" class="button-control flex-center-children flex-fill-children">
+            <a type="button" class="btn btn-outline-primary" asp-controller="Pessoas" asp-action="Create">
+                Criar pessoa
+            </a>
+            <a type="button" class="btn btn-outline-info" asp-controller="Pessoas" asp-action="Index">
+                Ver pessoas
+            </a>
+            <button class="btn btn-outline-dark" data-toggle="modal" data-target="#confirm-modal"
+                    data-bind="disable: !SelectedPessoa()">
+                Deslogar
+            </button>
         </div>
     </div>
 </div>
 
+<partial name="~/Views/Shared/Modals/ConfirmModal.cshtml" />
+
 <script src="~/js/viewmodels/CarteiraVM.js"></script>
-<script src="~/js/requests/GetPessoas.js"></script>
-<script>
-    $(document).ready(function () {
-        getPessoas();
-    });
-</script>
+<script src="~/js/requests/PessoasRequests.js"></script>
+<script src ="~/js/pages/CarteiraIndex.js"></script>
