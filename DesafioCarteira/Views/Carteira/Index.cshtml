@@ -3,17 +3,17 @@
     ViewData["Title"] = "Carteira";
 }
 
-<div id="carteira-view" class="main-container main-offcenter">
+<div id="carteira-view" class="main-container ">
     <!-- ko if: SelectedPessoa() -->
     <div class="card p-4">
         <div class="my-2">
             <span class="display-6" data-bind="text: PessoaNome() + ','"></span> seu saldo é de:
             <strong data-bind="text: formatNumber(PessoaSaldo())"></strong>.
             <!-- ko if: ChecarMinimo -->
-            <p data-bind="if: ChecarMinimo" class="text-danger my-1">Seu saldo está abaixo do limite!</p>
+            <p data-bind="if: ChecarMinimo" class="text-danger mt-2">Seu saldo está abaixo do limite!</p>
             <!-- /ko -->
         </div>
-        <div class="button-control flex-fill-children">
+        <div class="button-control set-flex-children">
             <button class="btn btn-primary">Movimentar</button>
             <button class="btn btn-secondary">Consultar</button>
         </div>
@@ -30,7 +30,7 @@
             </select>
         </div>
         <!-- /ko -->
-        <div id="pessoa-crud" class="button-control flex-center-children flex-fill-children">
+        <div id="pessoa-crud" class="button-control flex-center-children set-flex-children">
             <a type="button" class="btn btn-outline-primary" asp-controller="Pessoas" asp-action="Create">
                 Criar pessoa
             </a>

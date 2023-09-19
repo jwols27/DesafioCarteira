@@ -50,6 +50,38 @@ body {
     padding-bottom: 20%;
 }
 
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-right-center {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.flex-center-children > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.set-flex {
+    flex: 1;
+}
+
+.set-flex-children > * {
+    flex: 1;
+}
+
+.crud-control {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
 .button-control {
     display: flex;
     margin: 16px 0 16px 0;
@@ -57,12 +89,11 @@ body {
     width: 100%;
 }
 
-.button-control > * {
-    flex: 1;
+.table-colored th{
+    font-weight: 400;
+    vertical-align: middle !important;
 }
 
-.gap-4 {
-}
 
 .display-5, .display-6 {
     font-weight: 300;
