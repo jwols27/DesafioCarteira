@@ -1,0 +1,28 @@
+﻿
+<div class="modal fade" id="confirm-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- ko if: ModalTitle -->
+            <div class="modal-header">
+                <h5 class="modal-title" data-bind="text: ModalTitle"></h5>
+                <button type="button" class="btn-close" data-dismiss="modal">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <!-- /ko -->
+            <div class="modal-body">
+                <p>Você tem certeza que quer <span data-bind="text: ModalAction"></span>?</p>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        data-bind="attr: { id: ModalButton }">
+                    Sim.
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Não!!!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/viewmodels/ConfirmModalVM.js"></script>
+
