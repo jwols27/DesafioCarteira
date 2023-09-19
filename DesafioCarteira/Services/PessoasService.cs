@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.Exceptions;
+using SalesWebMvc.Services.Exceptions;
 
 namespace DesafioCarteira.Services
 {
@@ -47,11 +49,14 @@ namespace DesafioCarteira.Services
 
                 await transaction.CommitAsync();
             }
-            catch (Exception e)
+            catch (GenericADOException e)
             {
-                // TODO: Implement Error
-                Console.WriteLine(e);
                 await transaction?.RollbackAsync();
+                var sqlException = e.InnerException as System.Data.SqlClient.SqlException;
+                if (sqlException != null && sqlException.Number == 547)
+                {
+                    throw new IntegrityException("Não é possível deletar pessoa porque ela tem movimentações");
+                }
             }
             finally
             {

@@ -5,8 +5,8 @@
         success: function (data) {
             callback(data);
         },
-        error: function () {
-            console.log('Error fetching data.');
+        error: function (xhr) {
+            ErrorModal.ShowModal(xhr);
         }
     });
 }
@@ -19,8 +19,23 @@ function postPessoa(pessoa){
         success: function (data) {
             console.log(data);
         },
-        error: function () {
-            console.log('Error posting data.');
+        error: function (xhr) {
+            ErrorModal.ShowModal(xhr);
         }
+    });
+}
+
+function deletePessoa(pessoaId) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/Pessoas/Delete/' + pessoaId,
+            type: 'DELETE',
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (xhr) {
+                ErrorModal.ShowModal(xhr);
+            }
+        });
     });
 }
