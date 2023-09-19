@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using DesafioCarteira.Services;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DesafioCarteira
 {
@@ -30,18 +30,43 @@ namespace DesafioCarteira
             services.AddScoped<SeedingService>();
             services.AddScoped<CarteiraService>();
             services.AddScoped<PessoasService>();
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(
+                     (x) => "O valor é inválido");
+                options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(
+                    (x) => $"O valor {x} deve ser um número");
+                options.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(
+                    (x) => $"O valor da propriedade '{x}' não foi informado");
+                options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor(
+                    (x, y) => $"O valor '{x}' não é valido para {y}");
+                options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(
+                    () => "O campo é obrigatório");
+                options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(
+                    (x) => $"O valor informado é inválido para {x}");
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                    (x) => "O valor é inválido");
+            });
+
+            services.Configure<RequestLocalizationOptions>(options => {
+                var supportedCultures = new[] { new CultureInfo("pt-BR"), new CultureInfo("en") };
+                options.DefaultRequestCulture = new RequestCulture("pt-BR", "en");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
         {
 
-            var ptBR = new CultureInfo("pt-BR");
+            var supportedCultures = new[] { new CultureInfo("pt-BR"), new CultureInfo("en") };
             var localizationOptions = new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture(ptBR),
-                SupportedCultures = new List<CultureInfo> { ptBR },
-                SupportedUICultures = new List<CultureInfo> { ptBR },
+                DefaultRequestCulture = new RequestCulture(new CultureInfo("pt-BR")),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
             };
             app.UseRequestLocalization(localizationOptions);
 
