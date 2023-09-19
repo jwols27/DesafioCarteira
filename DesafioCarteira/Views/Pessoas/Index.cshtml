@@ -58,10 +58,11 @@
                            data-bind="attr: { href: 'Pessoas/Edit/' + id }">
                             <span class="material-icons">&#xe3c9;</span>
                         </a>
-                        <a type="button" class="btn btn-outline-danger p-1" href=""
-                           data-bind="attr: { href: 'Pessoas/Delete/' + id }">
+                        <button type="button" class="btn btn-outline-danger p-1"
+                                data-bind="click: $root.removerPessoa"        
+                        >
                             <span class="material-icons">&#xe872;</span>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -72,7 +73,3 @@
 <script src="~/js/viewmodels/PessoasIndexVM.js"></script>
 <script src="~/js/requests/PessoasRequests.js"></script>
 <script src="~/js/pages/PessoasIndex.js"></script>
-
-@*
-    asp-route-id="3"
-*@
