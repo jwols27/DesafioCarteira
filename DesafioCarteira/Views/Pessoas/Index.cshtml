@@ -1,6 +1,78 @@
-﻿
-@{ 
+﻿@model DesafioCarteira.Models.Pessoa
+@{
     ViewData["Title"] = "Pessoas";
 }
 
-<h2>Pessoas</h2>
+<div id="pessoas-view" class="main-container p-0">
+    <div class="card p-4">
+        <h2 class="mb-4">Pessoas</h2>
+        <table class="table table-striped table-responsive-lg table-colored m-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Salario)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Limite)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Minimo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Saldo)
+                    </th>
+                    <th>
+                        <div class="crud-table-single flex-right-center flex-center-children">
+                            <a type="button" class="btn btn-light p-1" asp-action="Create">
+                                <span class="material-icons">&#xe147;</span>
+                            </a>
+                        </div>
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: Pessoas">
+                <tr>
+                    <td data-bind="text: id"></td>
+                    <td data-bind="text: nome"></td>
+                    <td data-bind="text: email"></td>
+                    <td data-bind="text: $root.formatNumber(salario)"></td>
+                    <td data-bind="text: $root.formatNumber(limite)"></td>
+                    <td data-bind="text: $root.formatNumber(minimo)"></td>
+                    <td data-bind="text: $root.formatNumber(saldo)"></td>
+                    <td class="crud-control flex-right-center flex-center-children">
+                        <a type="button" class="btn btn-outline-info p-1" href=""
+                           data-bind="attr: { href: 'Pessoas/Details/' + id }">
+                            <span class="material-icons">&#xe88e;</span>
+                        </a>
+                        <a type="button" class="btn btn-outline-primary p-1" href=""
+                           data-bind="attr: { href: 'Pessoas/Edit/' + id }">
+                            <span class="material-icons">&#xe3c9;</span>
+                        </a>
+                        <a type="button" class="btn btn-outline-danger p-1" href=""
+                           data-bind="attr: { href: 'Pessoas/Delete/' + id }">
+                            <span class="material-icons">&#xe872;</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/js/viewmodels/PessoasIndexVM.js"></script>
+<script src="~/js/requests/PessoasRequests.js"></script>
+<script src="~/js/pages/PessoasIndex.js"></script>
+
+@*
+    asp-route-id="3"
+*@
