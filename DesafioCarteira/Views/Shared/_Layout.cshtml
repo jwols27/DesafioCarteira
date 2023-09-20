@@ -4,11 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - jpBank</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-zephyr.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="~/js/knockout.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/site.js"></script>
 </head>
 <body class="bg-light">
     <header>
@@ -19,12 +20,12 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ms-4">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        <li class="nav-item m-0">
                             <a class="nav-link text-dark" asp-controller="" asp-area="" asp-action="">Carteira</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item m-0">
                             <a class="nav-link text-dark" asp-controller="Pessoas" asp-area="" asp-action="">Pessoas</a>
                         </li>
                     </ul>
@@ -44,7 +45,6 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <partial name="~/Views/Shared/Modals/ErrorModal.cshtml" />
 
     @await RenderSectionAsync("Scripts", required: false)
