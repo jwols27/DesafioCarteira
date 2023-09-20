@@ -1,5 +1,9 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+for details on configuring this project to bundle and minify static web assets.
+
+
+    data-val-number="O valor Mínimo deve ser um número"
+*/
 
 #main {
     flex: 1;
@@ -84,14 +88,14 @@ body {
 
 .button-control {
     display: flex;
-    margin: 16px 0 16px 0;
+    margin: 32px 0 12px 0;
     gap: 16px;
     width: 100%;
 }
 
-.table-colored th{
-    font-weight: 400;
-    vertical-align: middle !important;
+.control-label {
+    margin-bottom: 4px;
+    margin-top: 12px;
 }
 
 
