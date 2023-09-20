@@ -1,36 +1,68 @@
-﻿
+﻿@model DesafioCarteira.Models.Movimento 
 @{
     ViewData["Title"] = "Carteira";
 }
 
 <div id="carteira-view" class="main-container ">
-    <!-- ko if: SelectedPessoa() -->
-    <div class="card p-4">
-        <div class="my-2">
-            <span class="display-6" data-bind="text: PessoaNome() + ','"></span> seu saldo é de:
-            <strong data-bind="text: formatNumber(PessoaSaldo())"></strong>.
-            <!-- ko if: ChecarMinimo -->
-            <p data-bind="if: ChecarMinimo" class="text-danger mt-2">Seu saldo está abaixo do limite!</p>
-            <!-- /ko -->
-        </div>
-        <div class="button-control set-flex-children">
-            <button class="btn btn-primary">Movimentar</button>
-            <button class="btn btn-secondary">Consultar</button>
+    <div data-bind="fadeSlide: SelectedPessoa()">
+        <div class="card p-4">
+            <div class="my-2">
+                <span class="display-6" data-bind="text: PessoaNome() + ','"></span> seu saldo é de:
+                <strong data-bind="text: formatNumber(PessoaSaldo())"></strong>.
+                <!-- ko if: ChecarMinimo -->
+                <p data-bind="if: ChecarMinimo" class="text-danger ms-1 mt-2 small">
+                    Seu saldo está abaixo do limite!
+                </p>
+                <!-- /ko -->
+            </div>
+            <div class="button-control set-flex-children">
+                <button class="btn btn-primary">Movimentar</button>
+                <button class="btn btn-secondary">Consultar</button>
+            </div>
         </div>
     </div>
-    <!-- /ko -->
     <div class="card p-4">
-        <!-- ko if: !SelectedPessoa() -->
-        <div class="my-2 form-group">
-            <label class="control-label font-weight-bold">Pessoa</label>
-            <select class="custom-select form-control"
-                    data-bind="options: Pessoas, optionsText: 'nome',
+        @* data-bind="fadeSlide: SelectedPessoa()*@
+        <strong>Novo movimento</strong>
+        <form id="movimento-form" data-bind="using: Movimento">
+            <input type="hidden" data-bind="value: $root.SelectedPessoa" />
+            <div class="form-group">
+                <label asp-for="Data" class="control-label"></label>
+                <input asp-for="Data" data-bind="value: Data" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" data-bind="value: Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" data-bind="value: Valor" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="button-control set-flex-children">
+                <button id="btn-entrada" type="submit" class="btn btn-success">
+                    Entrada
+                </button>
+                <button id="btn-saida" type="submit" class="btn btn-danger">
+                    Saída
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card p-4">
+        <div id="pessoa-select" data-bind="fadeSlide: !SelectedPessoa()">
+            <div class="my-2 form-group" data-bind="fadeVisible: SelectedPessoa()">
+                <label class="control-label mb-2"><strong>Pessoa</strong></label>
+                <select class="form-select form-control"
+                        data-bind="options: Pessoas, optionsText: 'nome',
                     optionsCaption: SelectedPessoa() ? undefined : 'Selecionar pessoa',
                     value: SelectedPessoa, valueAllowUnset: true, event: { change: updatePessoaInfo }">
-            </select>
+                </select>
+            </div>
         </div>
-        <!-- /ko -->
-        <div id="pessoa-crud" class="button-control flex-center-children set-flex-children">
+        <div id="pessoa-crud" class="button-control flex-center-children set-flex-children my-2">
             <a type="button" class="btn btn-outline-primary" asp-controller="Pessoas" asp-action="Create">
                 Criar pessoa
             </a>
@@ -48,5 +80,7 @@
 <partial name="~/Views/Shared/Modals/ConfirmModal.cshtml" />
 
 <script src="~/js/viewmodels/CarteiraVM.js"></script>
+<script src="~/js/viewmodels/MovimentoVM.js"></script>
+<script src="~/js/requests/MovimentosRequests.js"></script>
 <script src="~/js/requests/PessoasRequests.js"></script>
-<script src ="~/js/pages/CarteiraIndex.js"></script>
+<script src="~/js/pages/CarteiraIndex.js"></script>

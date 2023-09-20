@@ -1,4 +1,16 @@
-﻿var Carteira = new function CarteiraVM() {
+﻿ko.bindingHandlers.fadeSlide = {
+    init: function (element, valueAccessor) {
+        var shouldDisplay = valueAccessor();
+        $(element).toggle(!!shouldDisplay);
+    },
+    update: function (element, valueAccessor) {
+        var shouldDisplay = valueAccessor();
+        toggleFadeAnimation(element, !shouldDisplay);
+    }
+};
+
+
+var Carteira = new function CarteiraVM() {
     var self = this;
     self.Pessoas = ko.observableArray([]);
     self.SelectedPessoa = ko.observable();
@@ -28,10 +40,14 @@
             self.PessoaNome(selected.nome);
             self.PessoaSaldo(selected.saldo);
         }
-        else {
-            self.PessoaNome("");
-            self.PessoaSaldo(0);
-        }
+    }
+
+    self.Movimento = new function MovimentoVM() {
+        var myself = this;
+        myself.Data = ko.observable(getToday());
+        myself.Descricao = ko.observable("");
+        myself.Valor = ko.observable("");
+        myself.Tipo = ko.observable("");
     }
 }
 
