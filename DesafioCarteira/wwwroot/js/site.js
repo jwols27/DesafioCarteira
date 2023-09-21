@@ -21,11 +21,24 @@ function toggleFadeAnimation(element, condition) {
     }
 }
 
-function getToday() {
-    var currentDate = new Date();
-    return currentDate.toISOString().slice(0, 16);
+function getDate(date) {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().slice(0, 16);
 }
 
 function convertCommaToDot(inputString) {
     return inputString.replace(',', '.');
+}
+
+function handleFormErrors(es) {
+    clearFormErrors();
+    for (var i = 0; i < es.length; i++) {
+        $("#" + es[i].fieldName).addClass("is-invalid");
+        $("#" + es[i].fieldName + "Error").text(es[i].errorMessage);
+    }
+}
+
+function clearFormErrors() {
+    $(".is-invalid").removeClass("is-invalid");
+    $(".form-error").text('');
 }

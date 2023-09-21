@@ -1,3 +1,9 @@
 ﻿$(document).ready(function () {
-    getPessoas(PessoasIndex.Pessoas);
+    getPessoas()
+        .then((data) => {
+            PessoasIndex.Pessoas(data.pessoas);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 });
