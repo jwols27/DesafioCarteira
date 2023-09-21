@@ -4,8 +4,8 @@
     self.ModalError = ko.observable("");
 
     self.ShowModal = (xhr) => {
-        ErrorModal.ModalError("Erro " + xhr.status);
-        ErrorModal.ModalErrorMessage(xhr.responseText);
+        self.ModalError("Erro " + xhr.status);
+        self.ModalErrorMessage(xhr.responseText);
         $('#error-modal').modal('show');
     };
 }

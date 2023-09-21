@@ -47,7 +47,7 @@
                     <button id="btn-entrada" type="submit" class="btn btn-success">
                         Entrada
                     </button>
-                    <button id="btn-saida" type="submit" class="btn btn-danger">
+                    <button id="btn-confirmar-saida" type="submit" class="btn btn-danger">
                         Saída
                     </button>
                 </div>
@@ -59,9 +59,10 @@
             <div class="my-2 form-group" data-bind="fadeVisible: SelectedPessoa()">
                 <label class="control-label mb-2"><strong>Pessoa</strong></label>
                 <select class="form-select form-control"
-                        data-bind="options: Pessoas, optionsText: 'nome',
-                    optionsCaption: SelectedPessoa() ? undefined : 'Selecionar pessoa',
-                    value: SelectedPessoa, valueAllowUnset: true, event: { change: updatePessoaInfo }">
+                        data-bind=
+                        "options: Pessoas, optionsText: displayOption,
+                        optionsCaption: SelectedPessoa() ? undefined : 'Selecionar pessoa',
+                        value: SelectedPessoa, valueAllowUnset: true, event: { change: updatePessoaInfo }">
                 </select>
             </div>
         </div>
@@ -72,8 +73,7 @@
             <a type="button" class="btn btn-outline-info" asp-controller="Pessoas" asp-action="Index">
                 Ver pessoas
             </a>
-            <button class="btn btn-outline-dark" data-toggle="modal" data-target="#confirm-modal"
-                    data-bind="disable: !SelectedPessoa()">
+            <button id="confirmar-deslogar" class="btn btn-outline-dark" data-bind="disable: !SelectedPessoa()">
                 Deslogar
             </button>
         </div>

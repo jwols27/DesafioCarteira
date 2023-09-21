@@ -21,27 +21,42 @@
     else if (!Valor)
         errors.push({ fieldName: 'Valor', errorMessage: 'Valor é obrigatório' });
 
-    if (errors.length > 0) {
-        throw errors; // Throwing an array of errors
-    }
+    try {
+        if (errors.length > 0) {
+            throw errors;
+        }
 
-    return {
-        Pessoa,
-        Data,
-        Descricao,
-        Valor
+        clearFormErrors();
+        return {
+            Pessoa,
+            Data,
+            Descricao,
+            Valor
+        }
+    } catch (es) {
+        handleFormErrors(es);
     }
 }
 
 $(document).ready(function () {
-    ConfirmModal.ModalAction("deslogar");
-    ConfirmModal.ModalButton("btn-deslogar");
-    ConfirmModal.ModalTitle("Deslogar");
 
-    $("#btn-deslogar").click(() => {
-        Carteira.SelectedPessoa(null);
-        Carteira.updatePessoaInfo();
+    $("#confirmar-deslogar").click(() => {
+        console.log("confirmar")
+        let content = {
+            title: "Deslogar",
+            text: "Você tem certeza que quer deslogar?",
+            button: "btn-deslogar"
+        }
+        ConfirmModal.ShowConfirmModal(content);
+
+        $("#btn-deslogar").click(() => {
+            console.log("deslogar")
+            Carteira.SelectedPessoa(null);
+            Carteira.updatePessoaInfo();
+        })
     })
+
+    
 
     getPessoas()
         .then((data) => {
@@ -55,51 +70,62 @@ $(document).ready(function () {
         event.preventDefault();
     })
 
+    function movimentar(tipo) {
+        var mov = createMovimento();
+        if (!mov) return;
+        postMovimento(mov, tipo)
+            .then((data) => {
+                findPessoa(data.pessoaId)
+                    .then((data) => {
+                        console.log(data.pessoa);
+                        Carteira.SelectedPessoa().saldo = data.pessoa.saldo;
+                        Carteira.updatePessoaInfo();
+                        Carteira.Movimento.resetFields();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     $("#btn-entrada").click(() => {
-        try {
-            var entrada = createMovimento();
-            postMovimento(entrada, 'Entrada')
-                .then((data) => {
-                    findPessoa(data.pessoaId)
-                        .then((data) => {
-                            console.log(data.pessoa);
-                            Carteira.SelectedPessoa().saldo = data.pessoa.saldo;
-                            Carteira.updatePessoaInfo();
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-            clearFormErrors();
-        } catch (es) {
-            handleFormErrors(es);
-        }
+        movimentar('Entrada');
     })
 
-    $("#btn-saida").click(() => {
-        try {
-            var saida = createMovimento();
-            postMovimento(saida, 'Saida')
-                .then((data) => {
-                    findPessoa(data.pessoaId)
-                        .then((data) => {
-                            console.log(data.pessoa);
-                            Carteira.SelectedPessoa().saldo = data.pessoa.saldo;
-                            Carteira.updatePessoaInfo();
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-            clearFormErrors();
-        } catch (es) {
-            handleFormErrors(es);
+    $("#btn-confirmar-saida").click(() => {
+        var mov = createMovimento();
+        if (!mov) return;
+        var selected = Carteira.SelectedPessoa();
+        if (mov.Valor > 0)
+            mov.Valor = mov.Valor * -1
+
+        var total = selected.saldo + mov.Valor;
+
+        if (total < 0) {
+            let xhr = {
+                status: "de movimentação",
+                responseText: "Saldo não pode ficar negativo."
+            }
+            ErrorModal.ShowModal(xhr);
+            return;
+        }
+
+        if (total <= selected.minimo) {
+            let content = {
+                title: "Aviso de limite",
+                text: "Saldo ficará abaixo do limite!",
+                button: "btn-saida"
+            }
+            ConfirmModal.ShowConfirmModal(content);
+
+            $("#btn-saida").click(() => {
+                movimentar('Saida');
+            })
+        } else {
+            movimentar('Saida');
         }
     })
 });

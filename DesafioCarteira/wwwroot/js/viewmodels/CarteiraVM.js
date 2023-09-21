@@ -16,6 +16,10 @@ var Carteira = new function CarteiraVM() {
     self.SelectedPessoa = ko.observable();
     self.PessoaNome = ko.observable("");
     self.PessoaSaldo = ko.observable(0);
+    self.displayOption = (item) => {
+        return item.nome + ' - (Saldo: ' + self.formatNumber(item.saldo) + ')'
+    }
+
     self.FazerMovimento = ko.observable(false);
 
     self.formatNumber = function (number) {
