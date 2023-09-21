@@ -20,7 +20,7 @@ var Carteira = new function CarteiraVM() {
         return item.nome + ' - (Saldo: ' + self.formatNumber(item.saldo) + ')'
     }
 
-    self.FazerMovimento = ko.observable(false);
+    self.FazerMovimentacao = ko.observable(false);
 
     self.formatNumber = function (number) {
         if (!number) return "R$0,00";
@@ -41,7 +41,7 @@ var Carteira = new function CarteiraVM() {
         }
     }
 
-    self.Movimento = new MovimentoVM();
+    self.Movimentacao = new MovimentacaoVM();
 }
 
 ko.applyBindings(Carteira, document.getElementById('carteira-view'));

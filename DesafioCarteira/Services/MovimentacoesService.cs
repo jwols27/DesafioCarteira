@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace DesafioCarteira.Services
 {
-    public class MovimentoService : ICustomizableService<Movimento>
+    public class MovimentacoesService : ICustomizableService<Movimentacao>
     {
         private ISession _session;
 
-        public MovimentoService(ISession session) => _session = session;
+        public MovimentacoesService(ISession session) => _session = session;
 
-        public async Task Add(Movimento mov)
+        public async Task Add(Movimentacao mov)
         {
             ITransaction transaction = null;
 
@@ -51,7 +51,7 @@ namespace DesafioCarteira.Services
             }
         }
 
-        public async Task Remove<Trans> (int id) where Trans : Movimento
+        public async Task Remove<Trans> (int id) where Trans : Movimentacao
         {
             ITransaction transaction = null;
 
@@ -84,7 +84,7 @@ namespace DesafioCarteira.Services
             }
         }
 
-        public async Task Update(Movimento mov)
+        public async Task Update(Movimentacao mov)
         {
             ITransaction transaction = null;
 
@@ -104,7 +104,7 @@ namespace DesafioCarteira.Services
                 
 
                 Type antigoType = mov.GetType();
-                Movimento antigo = await _session.GetAsync(antigoType, mov.Id) as Movimento;
+                Movimentacao antigo = await _session.GetAsync(antigoType, mov.Id) as Movimentacao;
 
                 pessoa.Saldo = pessoa.Saldo + mov.Valor - antigo.Valor;
 
@@ -140,11 +140,11 @@ namespace DesafioCarteira.Services
             return default;
         }
 
-        public async Task<IEnumerable<Movimento>> FindAll()
+        public async Task<IEnumerable<Movimentacao>> FindAll()
         {
             IEnumerable<Entrada> entradas = await FindAll<Entrada>();
             IEnumerable<Saida> saidas = await FindAll<Saida>();
-            return entradas.Concat<Movimento>(saidas);
+            return entradas.Concat<Movimentacao>(saidas);
         }
 
         public async Task<IEnumerable<Trans>> FindAll<Trans>()
@@ -163,7 +163,7 @@ namespace DesafioCarteira.Services
         }
 
 
-        public async Task<bool> HasAny() => await _session.Query<Movimento>().AnyAsync();
+        public async Task<bool> HasAny() => await _session.Query<Movimentacao>().AnyAsync();
 
         public async Task<bool> HasAny<Trans>()
         {

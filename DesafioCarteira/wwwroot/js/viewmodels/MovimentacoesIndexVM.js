@@ -1,16 +1,17 @@
-﻿var PessoasIndex = new function PessoasIndexVM() {
+﻿var MovIndex = new function MovimentacoesIndex() {
     var self = this;
+
     self.formatNumber = function (number) {
         if (!number) return "-";
         return "R$" + number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    self.Pessoas = ko.observableArray([]);
+    self.Movs = ko.observableArray();
 
-    self.removerPessoa = function (pessoa) {
-        deletePessoa(pessoa.id)
+    self.removerMov = function (mov) {
+        deleteMovimentacao(mov.id)
             .then((res) => {
-                self.Pessoas.remove(pessoa);
+                self.Movs.remove(mov);
             })
             .catch(function (error) {
                 console.error(error);
@@ -18,4 +19,4 @@
     }
 }
 
-ko.applyBindings(PessoasIndex, document.getElementById('pessoas-view'));
+ko.applyBindings(MovIndex, document.getElementById('consulta-view'));

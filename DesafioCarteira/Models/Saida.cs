@@ -2,7 +2,7 @@
 
 namespace DesafioCarteira.Models
 {
-    public class Saida : Movimento
+    public class Saida : Movimentacao
     {
         public Saida() { }
 

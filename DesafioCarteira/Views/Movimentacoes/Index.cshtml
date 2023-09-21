@@ -1,0 +1,55 @@
+﻿@model DesafioCarteira.Models.Movimentacao
+@{
+    ViewData["Title"] = "Movimentações";
+}
+
+<div id="consulta-view" class="main-container p-0">
+    <div class="card p-4">
+        <h2 class="mb-4">@ViewData["Title"]</h2>
+        <table class="table table-striped table-responsive-xl m-0">
+            <thead class="table-dark">
+                <tr class="align-middle">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Data)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Pessoa.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Valor)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="align-middle" data-bind="foreach: Movimentacoes">
+                <tr>
+                    <td data-bind="text: data"></td>
+                    <td data-bind="text: pessoa.id"></td>
+                    <td data-bind="text: descricao"></td>
+                    <td data-bind="text: $root.formatNumber(valor)"></td>
+                    <td class="crud-control flex-right-center flex-center-children">
+                        <a type="button" class="btn btn-outline-info p-1" href=""
+                           data-bind="attr: { href: 'Movimentacoes/Details/' + id }">
+                            <span class="material-icons">&#xe88e;</span>
+                        </a>
+                        <a type="button" class="btn btn-outline-primary p-1" href=""
+                           data-bind="attr: { href: 'Movimentacoes/Edit/' + id }">
+                            <span class="material-icons">&#xe3c9;</span>
+                        </a>
+                        <button type="button" class="btn btn-outline-danger p-1"
+                                data-bind="click: $root.removerMovimentacao">
+                            <span class="material-icons">&#xe872;</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/js/viewmodels/MovimentacoesIndexVM.js"></script>
+<script src="~/js/requests/MovimentacoesRequests.js"></script>
+<script src="~/js/pages/MovimentacoesIndex.js"></script>

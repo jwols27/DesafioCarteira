@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DesafioCarteira.Models
 {
-    public abstract class Movimento
+    public abstract class Movimentacao
     {
         public virtual int Id { get; set; }
 
@@ -23,9 +23,9 @@ namespace DesafioCarteira.Models
         [DataType(DataType.Currency)]
         public virtual double Valor { get; set; }
 
-        protected Movimento() { }
+        protected Movimentacao() { }
 
-        protected Movimento(Pessoa pessoa, DateTime data, string descricao, double valor)
+        protected Movimentacao(Pessoa pessoa, DateTime data, string descricao, double valor)
         {
             Pessoa = pessoa;
             Data = data;

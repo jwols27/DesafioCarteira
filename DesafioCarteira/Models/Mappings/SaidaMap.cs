@@ -38,7 +38,7 @@ namespace DesafioCarteira.Models.Mappings
                 x.NotNullable(true);
             });
 
-            Table("movimento_saida");
+            Table("movimentacao_saida");
         }
     }
 }

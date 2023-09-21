@@ -1,4 +1,4 @@
-﻿function MovimentoVM() {
+﻿function MovimentacaoVM() {
     var self = this;
     self.Data = ko.observable(getDate(new Date()));
     self.Descricao = ko.observable("");

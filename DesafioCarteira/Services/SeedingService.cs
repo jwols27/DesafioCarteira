@@ -18,17 +18,17 @@ namespace DesafioCarteira.Services
             if (!_session.Query<Pessoa>().Any())
                 SeedPessoas();
 
-            if (!_session.Query<Entrada>().Any())
-                SeedMovimentos<Entrada>();
+            //if (!_session.Query<Entrada>().Any())
+            //    SeedMovimentacoes<Entrada>();
 
-            if (!_session.Query<Saida>().Any())
-                SeedMovimentos<Saida>();
+            //if (!_session.Query<Saida>().Any())
+            //    SeedMovimentacoes<Saida>();
         }
 
         private void SeedPessoas()
         {
             IEnumerable<Pessoa> pessoas = new List<Pessoa>() {
-                new Pessoa("Egbert", "eggjune@ska.ia", 4136.12, 1000.51, 500.0, 3000.0)
+                new Pessoa("June Egbert", "eggjune@ska.ia", 4136.12, 1000.51, 100.0, 201.0)
             };
 
             ITransaction transaction = null;
@@ -55,20 +55,20 @@ namespace DesafioCarteira.Services
 
 
 
-        private void SeedMovimentos<Trans>() where Trans : Movimento
+        private void SeedMovimentacoes<Trans>() where Trans : Movimentacao
         {
 
             ITransaction transaction = null;
             try
             {
                 Pessoa pessoa = _session.Get<Pessoa>(1);
-                IEnumerable<Movimento> movs = new List<Movimento>() {
-                    MovimentoFactory.CreateMovimento<Trans>(pessoa, DateTime.Today.AddDays(-1), "Transação", 100.0),
-                    MovimentoFactory.CreateMovimento<Trans>(pessoa, DateTime.Today.AddDays(0), "Transação2", 101.0),
+                IEnumerable<Movimentacao> movs = new List<Movimentacao>() {
+                    MovimentacaoFactory.CreateMovimentacao<Trans>(pessoa, DateTime.Today.AddDays(-1), "Transação", 100.0),
+                    MovimentacaoFactory.CreateMovimentacao<Trans>(pessoa, DateTime.Today.AddDays(0), "Transação2", 101.0),
                 };
 
                 transaction = _session.BeginTransaction();
-                foreach (Movimento mov in movs)
+                foreach (Movimentacao mov in movs)
                 {
                     _session.Save(mov as Trans);
                 }

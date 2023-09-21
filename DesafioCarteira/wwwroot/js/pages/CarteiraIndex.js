@@ -1,21 +1,21 @@
-﻿function createMovimento() {
+﻿function createMovimentacao() {
     var errors = [];
-    var movimento = Carteira.Movimento;
+    var movimentacao = Carteira.Movimentacao;
 
     var Pessoa = Carteira.SelectedPessoa();
 
-    var Data = new Date(movimento.Data());
+    var Data = new Date(movimentacao.Data());
     if (isNaN(Data))
         errors.push({ fieldName: 'Data', errorMessage: 'Data inválida' });
 
-    var Descricao = movimento.Descricao();
+    var Descricao = movimentacao.Descricao();
     if (!Descricao)
         errors.push({ fieldName: 'Descricao', errorMessage: 'Descrição é obrigatória' });
     else if (Descricao.length < 3 || Descricao.length > 50)
         errors.push({ fieldName: 'Descricao', errorMessage: 'Descrição deve ter no mínimo 3 e até 50 caracteres' });
 
     
-    var Valor = parseFloat(convertCommaToDot(movimento.Valor()));
+    var Valor = parseFloat(convertCommaToDot(movimentacao.Valor()));
     if (isNaN(Valor))
         errors.push({ fieldName: 'Valor', errorMessage: 'Valor não é um número' });
     else if (!Valor)
@@ -41,7 +41,6 @@
 $(document).ready(function () {
 
     $("#confirmar-deslogar").click(() => {
-        console.log("confirmar")
         let content = {
             title: "Deslogar",
             text: "Você tem certeza que quer deslogar?",
@@ -50,7 +49,6 @@ $(document).ready(function () {
         ConfirmModal.ShowConfirmModal(content);
 
         $("#btn-deslogar").click(() => {
-            console.log("deslogar")
             Carteira.SelectedPessoa(null);
             Carteira.updatePessoaInfo();
         })
@@ -66,21 +64,21 @@ $(document).ready(function () {
             console.error(error);
         });
 
-    $("#movimento-form").submit((event) => {
+    $("#movimentacao-form").submit((event) => {
         event.preventDefault();
     })
 
     function movimentar(tipo) {
-        var mov = createMovimento();
+        var mov = createMovimentacao();
         if (!mov) return;
-        postMovimento(mov, tipo)
+        postMovimentacao(mov, tipo)
             .then((data) => {
                 findPessoa(data.pessoaId)
                     .then((data) => {
                         console.log(data.pessoa);
                         Carteira.SelectedPessoa().saldo = data.pessoa.saldo;
                         Carteira.updatePessoaInfo();
-                        Carteira.Movimento.resetFields();
+                        Carteira.Movimentacao.resetFields();
                     })
                     .catch((error) => {
                         console.log(error);
@@ -96,7 +94,7 @@ $(document).ready(function () {
     })
 
     $("#btn-confirmar-saida").click(() => {
-        var mov = createMovimento();
+        var mov = createMovimentacao();
         if (!mov) return;
         var selected = Carteira.SelectedPessoa();
         if (mov.Valor > 0)

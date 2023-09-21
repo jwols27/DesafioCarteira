@@ -10,9 +10,10 @@ namespace DesafioCarteira.Controllers
 {
     public class CarteiraController : Controller
     {
-        private readonly MovimentoService _movimentoService;
+        private readonly MovimentacoesService _movimentacoesService;
 
-        public CarteiraController(MovimentoService movimentoService) => _movimentoService = movimentoService;
+        public CarteiraController(MovimentacoesService movimentacoesService) => 
+            _movimentacoesService = movimentacoesService;
 
         public IActionResult Index()
         {
@@ -21,11 +22,11 @@ namespace DesafioCarteira.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateEntrada(string movimento)
+        public async Task<IActionResult> CreateEntrada(string movimentacao)
         {
             try
             {
-                Entrada entrada = JsonConvert.DeserializeObject<Entrada>(movimento);
+                Entrada entrada = JsonConvert.DeserializeObject<Entrada>(movimentacao);
 
                 if (entrada.Pessoa == null)
                     throw new BadHttpRequestException("Uma pessoa deve estar selecionada");
@@ -33,7 +34,7 @@ namespace DesafioCarteira.Controllers
                 if (entrada.Valor < 0)
                     entrada.Valor = entrada.Valor * -1;
 
-                await _movimentoService.Add(entrada);
+                await _movimentacoesService.Add(entrada);
 
                 return Json(new { pessoaId = entrada.Pessoa.Id });
             }
@@ -45,11 +46,11 @@ namespace DesafioCarteira.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateSaida(string movimento)
+        public async Task<IActionResult> CreateSaida(string movimentacao)
         {
             try
             {
-                Saida saida = JsonConvert.DeserializeObject<Saida>(movimento);
+                Saida saida = JsonConvert.DeserializeObject<Saida>(movimentacao);
 
                 if (saida.Pessoa == null)
                     throw new BadHttpRequestException("Uma pessoa deve estar selecionada");
@@ -57,7 +58,7 @@ namespace DesafioCarteira.Controllers
                 if (saida.Valor > 0)
                     saida.Valor = saida.Valor * -1;
 
-                await _movimentoService.Add(saida);
+                await _movimentacoesService.Add(saida);
 
                 return Json(new { pessoaId = saida.Pessoa.Id });
             }

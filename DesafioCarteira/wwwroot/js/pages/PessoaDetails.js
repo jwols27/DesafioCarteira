@@ -9,9 +9,7 @@
     $("#btn-deletar-pessoa").click(() => {
         deletePessoa(parseInt(text.trim()))
             .then((res) => {
-                if (res.success) {
-                    window.location.href = res.redirectUrl;
-                }
+                window.location.href = res.redirectUrl;
             })
             .catch(function (error) {
                 console.error(error);

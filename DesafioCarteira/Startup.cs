@@ -28,7 +28,7 @@ namespace DesafioCarteira
             services.AddControllersWithViews();
 
             services.AddScoped<SeedingService>();
-            services.AddScoped<MovimentoService>();
+            services.AddScoped<MovimentacoesService>();
             services.AddScoped<PessoasService>();
 
             services.Configure<MvcOptions>(options =>
