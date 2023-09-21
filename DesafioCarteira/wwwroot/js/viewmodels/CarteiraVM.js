@@ -16,22 +16,17 @@ var Carteira = new function CarteiraVM() {
     self.SelectedPessoa = ko.observable();
     self.PessoaNome = ko.observable("");
     self.PessoaSaldo = ko.observable(0);
+    self.FazerMovimento = ko.observable(false);
 
     self.formatNumber = function (number) {
         if (!number) return "R$0,00";
         return "R$" + number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    self.PessoaSalario = ko.pureComputed(() => {
-        var selectedPessoa = self.SelectedPessoa();
-        if (!selectedPessoa) return "R$0,00";
-        return self.formatNumber(selectedPessoa.salario);
-    })
-
     self.ChecarMinimo = ko.pureComputed(() => {
         var selectedPessoa = self.SelectedPessoa();
         if (!selectedPessoa) return false;
-        return selectedPessoa.saldo <= selectedPessoa.minimo;
+        return self.PessoaSaldo() <= selectedPessoa.minimo;
     })
 
     self.updatePessoaInfo = () => {
@@ -42,13 +37,7 @@ var Carteira = new function CarteiraVM() {
         }
     }
 
-    self.Movimento = new function MovimentoVM() {
-        var myself = this;
-        myself.Data = ko.observable(getToday());
-        myself.Descricao = ko.observable("");
-        myself.Valor = ko.observable("");
-        myself.Tipo = ko.observable("");
-    }
+    self.Movimento = new MovimentoVM();
 }
 
 ko.applyBindings(Carteira, document.getElementById('carteira-view'));

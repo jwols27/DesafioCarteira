@@ -6,7 +6,7 @@ namespace DesafioCarteira.Services.Interfaces
     public interface ICustomizableService<T>
     {
         Task Add(T item);
-        Task Remove<U>(int id);
+        Task Remove<U>(int id) where U : T;
         Task Update(T item);
         Task<U> FindById<U>(int id);
         Task<IEnumerable<T>> FindAll();

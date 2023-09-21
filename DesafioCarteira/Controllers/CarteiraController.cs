@@ -1,24 +1,70 @@
 ﻿using DesafioCarteira.Models;
+using DesafioCarteira.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 
 namespace DesafioCarteira.Controllers
 {
     public class CarteiraController : Controller
     {
-        public async Task<IActionResult> Index()
+        private readonly MovimentoService _movimentoService;
+
+        public CarteiraController(MovimentoService movimentoService) => _movimentoService = movimentoService;
+
+        public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateEntrada(string entrada, string pessoa)
+        public async Task<IActionResult> CreateEntrada(string movimento)
         {
-            Entrada convertido = JsonConvert.DeserializeObject<Entrada>(entrada);
+            try
+            {
+                Entrada entrada = JsonConvert.DeserializeObject<Entrada>(movimento);
 
-            return Json(convertido);
+                if (entrada.Pessoa == null)
+                    throw new BadHttpRequestException("Uma pessoa deve estar selecionada");
+
+                if (entrada.Valor < 0)
+                    entrada.Valor = entrada.Valor * -1;
+
+                await _movimentoService.Add(entrada);
+
+                return Json(new { pessoaId = entrada.Pessoa.Id });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSaida(string movimento)
+        {
+            try
+            {
+                Saida saida = JsonConvert.DeserializeObject<Saida>(movimento);
+
+                if (saida.Pessoa == null)
+                    throw new BadHttpRequestException("Uma pessoa deve estar selecionada");
+
+                if (saida.Valor > 0)
+                    saida.Valor = saida.Valor * -1;
+
+                await _movimentoService.Add(saida);
+
+                return Json(new { pessoaId = saida.Pessoa.Id });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         //return RedirectToAction(nameof(Error), new { message = "ID not provided" });

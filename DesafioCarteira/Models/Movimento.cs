@@ -15,6 +15,7 @@ namespace DesafioCarteira.Models
         public virtual DateTime Data { get; set; }
 
         [Required(ErrorMessage = "{0} é obrigatório")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} deve ter no mínimo {2} e menos de {1} caracteres")]
         [Display(Name = "Descrição")]
         public virtual string Descricao { get; set; }
 

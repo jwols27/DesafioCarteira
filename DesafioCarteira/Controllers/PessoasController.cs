@@ -18,10 +18,30 @@ namespace DesafioCarteira.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Find()
+        public async Task<IActionResult> Get()
         {
-            var pessoas = await _pessoasService.FindAll();
-            return Json(pessoas);
+            try
+            {
+                var pessoas = await _pessoasService.FindAll();
+                return Json(new { pessoas });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        public async Task<IActionResult> Find(int id)
+        {
+            try
+            {
+                var pessoa = await _pessoasService.FindById(id);
+                return Json(new { pessoa });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         public IActionResult Create()
@@ -101,7 +121,7 @@ namespace DesafioCarteira.Controllers
 
                 string url = Url.Action(nameof(Index));
 
-                return Json(new { success = true, redirectUrl = url });
+                return Json(new { redirectUrl = url });
             }
             catch (Exception e)
             {

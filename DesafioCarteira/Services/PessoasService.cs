@@ -71,7 +71,10 @@ namespace DesafioCarteira.Services
             try
             {
                 transaction = _session.BeginTransaction();
-                await _session.UpdateAsync(pessoa);
+                Pessoa antigo = await _session.GetAsync<Pessoa>(pessoa.Id);
+                pessoa.Saldo = antigo.Saldo;
+
+                await _session.MergeAsync(pessoa);
                 await transaction.CommitAsync();
             }
             catch (Exception e)

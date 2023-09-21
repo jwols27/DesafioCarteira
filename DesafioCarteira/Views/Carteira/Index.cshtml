@@ -10,46 +10,49 @@
                 <span class="display-6" data-bind="text: PessoaNome() + ','"></span> seu saldo é de:
                 <strong data-bind="text: formatNumber(PessoaSaldo())"></strong>.
                 <!-- ko if: ChecarMinimo -->
-                <p data-bind="if: ChecarMinimo" class="text-danger ms-1 mt-2 small">
+                <p data-bind="if: ChecarMinimo" class="text-danger ms-1 my-2 small">
                     Seu saldo está abaixo do limite!
                 </p>
                 <!-- /ko -->
             </div>
             <div class="button-control set-flex-children">
-                <button class="btn btn-primary">Movimentar</button>
+                <button class="btn btn-primary" data-bind="click: () => FazerMovimento(!FazerMovimento())">
+                    Movimentar
+                </button>
                 <button class="btn btn-secondary">Consultar</button>
             </div>
         </div>
     </div>
-    <div class="card p-4">
-        @* data-bind="fadeSlide: SelectedPessoa()*@
-        <strong>Novo movimento</strong>
-        <form id="movimento-form" data-bind="using: Movimento">
-            <input type="hidden" data-bind="value: $root.SelectedPessoa" />
-            <div class="form-group">
-                <label asp-for="Data" class="control-label"></label>
-                <input asp-for="Data" data-bind="value: Data" class="form-control" />
-                <span class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" data-bind="value: Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" data-bind="value: Valor" class="form-control" />
-                <span class="text-danger"></span>
-            </div>
-            <div class="button-control set-flex-children">
-                <button id="btn-entrada" type="submit" class="btn btn-success">
-                    Entrada
-                </button>
-                <button id="btn-saida" type="submit" class="btn btn-danger">
-                    Saída
-                </button>
-            </div>
-        </form>
+    <div data-bind="fadeSlide: FazerMovimento()">
+        <div class="card p-4">
+            <strong>Novo movimento</strong>
+            <form id="movimento-form" data-bind="using: Movimento">
+                <input type="hidden" data-bind="value: $root.SelectedPessoa" />
+                <div class="form-group">
+                    <label asp-for="Data" class="control-label"></label>
+                    <input asp-for="Data" data-bind="value: Data" class="form-control" />
+                    <span id="DataError" class="text-danger small form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descricao" class="control-label"></label>
+                    <input asp-for="Descricao" data-bind="value: Descricao" class="form-control" />
+                    <span id="DescricaoError" class="text-danger small form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Valor" class="control-label"></label>
+                    <input asp-for="Valor" data-bind="value: Valor" class="form-control" />
+                    <span id="ValorError" class="text-danger small form-error"></span>
+                </div>
+                <div class="button-control set-flex-children">
+                    <button id="btn-entrada" type="submit" class="btn btn-success">
+                        Entrada
+                    </button>
+                    <button id="btn-saida" type="submit" class="btn btn-danger">
+                        Saída
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="card p-4">
         <div id="pessoa-select" data-bind="fadeSlide: !SelectedPessoa()">
@@ -79,8 +82,8 @@
 
 <partial name="~/Views/Shared/Modals/ConfirmModal.cshtml" />
 
-<script src="~/js/viewmodels/CarteiraVM.js"></script>
 <script src="~/js/viewmodels/MovimentoVM.js"></script>
+<script src="~/js/viewmodels/CarteiraVM.js"></script>
 <script src="~/js/requests/MovimentosRequests.js"></script>
 <script src="~/js/requests/PessoasRequests.js"></script>
 <script src="~/js/pages/CarteiraIndex.js"></script>
