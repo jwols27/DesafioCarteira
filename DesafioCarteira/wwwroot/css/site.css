@@ -76,6 +76,10 @@ body {
     flex: 1;
 }
 
+.set-flex-2 {
+    flex: 2 !important;
+}
+
 .set-flex-children > * {
     flex: 1;
 }
@@ -98,6 +102,9 @@ body {
     margin-top: 12px;
 }
 
+.gap-2 {
+    gap: 8px;
+}
 
 .display-5, .display-6 {
     font-weight: 300;

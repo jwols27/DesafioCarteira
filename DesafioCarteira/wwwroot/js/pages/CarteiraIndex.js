@@ -44,6 +44,7 @@ function movimentar(tipo) {
     postMovimentacao(mov, tipo)
         .then((data) => {
             Carteira.PessoaSaldo(data.saldoNovo);
+            Carteira.Movimentacao.resetFields();
         })
         .catch((error) => {
             console.log(error);

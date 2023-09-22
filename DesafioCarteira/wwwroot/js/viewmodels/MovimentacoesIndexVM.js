@@ -44,7 +44,6 @@
 
     self.editarMov = function (movimento) {
         const { mov, type } = movimento;
-        console.log(mov)
         try {
             window.location.href = '/Movimentacoes/Edit/' + mov.id
                 + '?pessoaId=' + localStorage.getItem('pessoaId') + '&type=' + type;
@@ -61,6 +60,20 @@
                 console.error(error);
             });
     }
+
+    self.selectedTempo = ko.observable();
+
+    self.tempoPersonalizado = ko.pureComputed(() => {
+        if (!self.selectedTempo()) return false;
+        return self.selectedTempo()?.text === "Personalizado";
+    })
+
+    self.tempoOptions = [
+        { text: "07 dias", time: { before: getNewDateZeroed(7), after: new Date() } },
+        { text: "15 dias", time: { before: getNewDateZeroed(15), after: new Date() } },
+        { text: "30 dias", time: { before: getNewDateZeroed(30), after: new Date() } },
+        { text: "Personalizado" },
+    ]
 }
 
 ko.applyBindings(MovIndex, document.getElementById('consulta-view'));

@@ -34,6 +34,8 @@ namespace DesafioCarteira.Controllers
                 if (entrada.Valor < 0)
                     entrada.Valor = entrada.Valor * -1;
 
+                //entrada.Data.
+
                 await _movimentacoesService.Add(entrada);
 
                 return Json(

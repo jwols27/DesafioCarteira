@@ -98,7 +98,7 @@ namespace DesafioCarteira.Services
                 IsTypeValid(mov.GetType());
                 transaction = _session.BeginTransaction();
 
-                Pessoa pessoa = await _session.GetAsync<Pessoa>(mov.Id);
+                Pessoa pessoa = await _session.GetAsync<Pessoa>(pessoaId);
                 if (pessoa == null)
                     throw new NotFoundException("Pessoa não encontrada");
 
@@ -140,6 +140,8 @@ namespace DesafioCarteira.Services
                 var trans = await _session.GetAsync<Trans>(id);
                 if (pessoaId != trans.Pessoa.Id)
                     throw new UnauthorizedAccessException("Acesso não autorizado");
+
+                trans.Data = trans.Data.AddHours(-3);
                 return trans;
             }
             catch (InvalidOperationException e)
@@ -150,22 +152,37 @@ namespace DesafioCarteira.Services
             return default;
         }
 
-        public async Task<IEnumerable<Movimentacao>> FindAllById(int pessoaId)
+        public async Task<IEnumerable<Movimentacao>> FindAllById
+            (int pessoaId, DateTime? beforeDate = null, DateTime? afterDate = null)
         {
-            IEnumerable<Entrada> entradas = await FindAllById<Entrada>(pessoaId);
-            IEnumerable<Saida> saidas = await FindAllById<Saida>(pessoaId);
+            IEnumerable<Entrada> entradas = await FindAllById<Entrada>(pessoaId, beforeDate, afterDate);
+            IEnumerable<Saida> saidas = await FindAllById<Saida>(pessoaId, beforeDate, afterDate);
             return entradas.Concat<Movimentacao>(saidas)
                 .OrderByDescending(t => t.Data);
         }
 
-        public async Task<IEnumerable<Trans>> FindAllById<Trans>(int pessoaId) where Trans : Movimentacao
+        public async Task<IEnumerable<Trans>> FindAllById<Trans>
+            (int pessoaId, DateTime? beforeDate = null, DateTime? afterDate = null)
+            where Trans : Movimentacao
         {
             try
             {
-                return await _session.Query<Trans>()
-                    .Where(t => t.Pessoa.Id == pessoaId)
+                IQueryable<Trans> query = _session.Query<Trans>().Where(t => t.Pessoa.Id == pessoaId);
+
+                if (beforeDate != null)
+                    query = query.Where(t => t.Data >= beforeDate.Value);
+
+                if (afterDate != null)
+                    query = query.Where(t => t.Data <= afterDate.Value);
+
+                var movs = await query
                     .OrderByDescending(t => t.Data)
                     .ToListAsync();
+
+                foreach (var mov in movs)
+                    mov.Data = mov.Data.AddHours(-3);
+
+                return movs;
             }
             catch (InvalidOperationException e)
             {

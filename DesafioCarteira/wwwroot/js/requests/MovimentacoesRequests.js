@@ -1,9 +1,9 @@
-﻿function getMovimentacoes(pessoaId, type) {
+﻿function getMovimentacoes(pessoaId, type, before = "", after = "") {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '/Movimentacoes/Get/' + pessoaId,
             type: 'GET',
-            data: { type },
+            data: { type, before, after },
             success: function (data) {
                 resolve(data);
             },

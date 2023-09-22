@@ -16,9 +16,19 @@ function toggleFadeAnimation(element, condition) {
     }
 }
 
-function getDate(date) {
+function getNewDate(date = new Date()) {
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     return date.toISOString().slice(0, 16);
+}
+
+function getCompleteDate(date = newDate()) {
+    return date.toISOString();
+}
+
+function getNewDateZeroed(n = 0, date = new Date()) {
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - n);
+    return date;
 }
 
 function formatDateString(dateString) {

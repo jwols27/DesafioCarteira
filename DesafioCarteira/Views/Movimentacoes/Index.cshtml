@@ -18,6 +18,24 @@
 
         </div>
     </div>
+
+    <div class="card p-4 ">
+        <div class="button-control set-flex-children my-2">
+            <select id="date-select" class="form-select form-control set-flex-2"
+                    data-bind="options: tempoOptions, optionsText: 'text',
+                        optionsCaption: 'Filtrar',
+                        value: selectedTempo, valueAllowUnset: true">
+            </select>
+            <button id="buscar" type="button" class="btn btn-primary">Buscar</button>
+        </div>
+        <div data-bind="fadeSlide: { cond: tempoPersonalizado }">
+            <div class="flex-center set-flex-children gap-2 my-2" >
+                <input id="date-before" type="datetime-local" class="form-control" />
+                <input id="date-after" type="datetime-local" class="form-control" />
+            </div>
+        </div>
+    </div>
+
     <div class="card p-4">
         <h2 class="mb-4" data-bind="text: '@ViewData["Title"], ' + MovDisplay()"></h2>
         <table class="table table-striped table-responsive-xl m-0">
@@ -52,8 +70,7 @@
                     <td data-bind="text: $root.formatNumber(valor)"></td>
                     <td class="crud-control flex-right-center flex-center-children">
                         <a type="button" class="btn btn-outline-info p-1" href=""
-                            data-bind="click: () => $root.detalharMov($parent)"
-                        >
+                           data-bind="click: () => $root.detalharMov($parent)">
                             <span class="material-icons">&#xe88e;</span>
                         </a>
                         <button id="edit-mov-btn" type="button" class="btn btn-outline-primary p-1"

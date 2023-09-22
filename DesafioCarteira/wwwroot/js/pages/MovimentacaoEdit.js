@@ -43,20 +43,10 @@
 
 function editarMov(tipo) {
     let mov = createMovimentacaoEdit();
-    console.log(mov)
     if (!mov) return;
     editMovimentacao(mov, tipo)
         .then((data) => {
-            findPessoa(data.pessoaId)
-                .then((data) => {
-                    Carteira.SelectedPessoa().saldo = data.pessoa.saldo;
-                    Carteira.updatePessoaInfo();
-                    Carteira.Movimentacao.resetFields();
-                    data.redirectUrl;
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
+            window.location.href = data.redirectUrl;
         })
         .catch((error) => {
             console.log(error);

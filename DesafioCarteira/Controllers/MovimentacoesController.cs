@@ -24,27 +24,35 @@ namespace DesafioCarteira.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Get(int? id, string type)
+        public async Task<IActionResult> Get(int? id, string type, string before, string after)
         {
             try
             {
                 if (id == null)
                     throw new BadHttpRequestException("ID não pode ser nulo");
 
+                DateTime? beforeData = null, afterData = null;
+
                 IEnumerable<Movimentacao> temp;
+
+                if (DateTime.TryParse(before, out DateTime result))
+                    beforeData = result;
+
+                if (DateTime.TryParse(after, out result))
+                    afterData = result;
 
                 switch (type)
                 {
                     case "E":
-                        temp = await _movimentacoesService.FindAllById<Entrada>(id.Value);
+                        temp = await _movimentacoesService.FindAllById<Entrada>(id.Value, beforeData, afterData);
                         break;
 
                     case "S":
-                        temp = await _movimentacoesService.FindAllById<Saida>(id.Value);
+                        temp = await _movimentacoesService.FindAllById<Saida>(id.Value, beforeData, afterData);
                         break;
 
                     default:
-                        temp = await _movimentacoesService.FindAllById(id.Value);
+                        temp = await _movimentacoesService.FindAllById(id.Value, beforeData, afterData);
                         break;
                 }
 
