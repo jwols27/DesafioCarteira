@@ -1,0 +1,57 @@
+﻿@model DesafioCarteira.Models.ViewModels.TypedMov
+@{
+    ViewData["Title"] = Model.ExtMov() + " " + Model.Mov.Id + " Detalhes";
+}
+
+<div class="card border-primary">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title m-0">@ViewData["Title"]</h4>
+    </div>
+    <dl class="card-body row m-0">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Mov.Id)
+        </dt>
+        <dd class="col-sm-8" id="mov-id">
+            @Html.DisplayFor(model => model.Mov.Id)
+        </dd>
+        <dt class="col-sm-3">
+            Nome da pessoa
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Mov.Pessoa.Nome)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Mov.Data)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Mov.Data)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Mov.Descricao)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Mov.Descricao)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Mov.Valor)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Mov.Valor)
+        </dd>
+
+    </dl>
+</div>
+<div class="mt-2 d-flex">
+    <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Mov.Id">Editar</a>
+    <button id="confirmar-deletar-mov" class="ms-1 btn btn-danger text-white">Deletar</button>
+    <a type="button" class="ms-auto btn btn-outline-dark" asp-action="Index">Início</a>
+</div>
+
+
+<script>
+    const typedMovJson = @Html.Raw(Json.Serialize(Model));
+</script>
+
+<partial name="~/Views/Shared/Modals/ConfirmModal.cshtml" />
+<script src="~/js/requests/MovimentacoesRequests.js"></script>
+<script src="~/js/pages/MovimentacaoDetails.js"></script>

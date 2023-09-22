@@ -39,7 +39,6 @@
 }
 
 $(document).ready(function () {
-
     $("#confirmar-deslogar").click(() => {
         let content = {
             title: "Deslogar",
@@ -54,8 +53,6 @@ $(document).ready(function () {
         })
     })
 
-    
-
     getPessoas()
         .then((data) => {
             Carteira.Pessoas(data.pessoas);
@@ -64,12 +61,14 @@ $(document).ready(function () {
             console.error(error);
         });
 
+    Carteira.getLoggedIn();
+
     $("#movimentacao-form").submit((event) => {
         event.preventDefault();
     })
 
     function movimentar(tipo) {
-        var mov = createMovimentacao();
+        let mov = createMovimentacao();
         if (!mov) return;
         postMovimentacao(mov, tipo)
             .then((data) => {
@@ -94,13 +93,14 @@ $(document).ready(function () {
     })
 
     $("#btn-confirmar-saida").click(() => {
-        var mov = createMovimentacao();
+        let mov = createMovimentacao();
         if (!mov) return;
-        var selected = Carteira.SelectedPessoa();
+
+        let selected = Carteira.SelectedPessoa();
         if (mov.Valor > 0)
             mov.Valor = mov.Valor * -1
 
-        var total = selected.saldo + mov.Valor;
+        let total = selected.saldo + mov.Valor;
 
         if (total < 0) {
             let xhr = {

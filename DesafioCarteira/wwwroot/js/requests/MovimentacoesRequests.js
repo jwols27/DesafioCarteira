@@ -1,8 +1,25 @@
-﻿function getMovimentacao() {
+﻿function getMovimentacoes(pessoaId, type) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/Movimentacoes/Get',
+            url: '/Movimentacoes/Get/' + pessoaId,
             type: 'GET',
+            data: { type },
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (xhr) {
+                ErrorModal.ShowModal(xhr);
+            }
+        });
+    })
+}
+
+function findMovimentacao(movId, pessoaId, type) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/Movimentacoes/Details/' + movId,
+            type: 'GET',
+            data: { pessoaId, type },
             success: function (data) {
                 resolve(data);
             },
@@ -29,11 +46,12 @@ function postMovimentacao(movimentacao, tipo) {
     })
 }
 
-function deleteMovimentacao(movId) {
+function deleteMovimentacao(movId, pessoaId, type) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/Movimentacoes/Delete/' + movId,
             type: 'DELETE',
+            data: { pessoaId, type },
             success: function (data) {
                 resolve(data);
             },

@@ -5,7 +5,21 @@
 
 <div id="consulta-view" class="main-container p-0">
     <div class="card p-4">
-        <h2 class="mb-4">@ViewData["Title"]</h2>
+        <div id="movtype-group" class="btn-group" role="group">
+
+            <input type="radio" class="btn-check" id="movtypeAmbos" value="A" data-bind="checked: MovOption">
+            <label class="btn btn-outline-primary" for="movtypeAmbos">Ambos</label>
+
+            <input type="radio" class="btn-check" id="movtypeE" value="E" data-bind="checked: MovOption">
+            <label class="btn btn-outline-primary" for="movtypeE">Entradas</label>
+
+            <input type="radio" class="btn-check" id="movtypeS" value="S" data-bind="checked: MovOption">
+            <label class="btn btn-outline-primary" for="movtypeS">Saídas</label>
+
+        </div>
+    </div>
+    <div class="card p-4">
+        <h2 class="mb-4" data-bind="text: '@ViewData["Title"], ' + MovDisplay()"></h2>
         <table class="table table-striped table-responsive-xl m-0">
             <thead class="table-dark">
                 <tr class="align-middle">
@@ -24,27 +38,35 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody class="align-middle" data-bind="foreach: Movimentacoes">
+            <tbody class="align-middle">
+                <!-- ko ifnot: Movs().length > 0 -->
                 <tr>
-                    <td data-bind="text: data"></td>
-                    <td data-bind="text: pessoa.id"></td>
+                    <td align="center" colspan="5">Nenhuma movimentação encontrada</td>
+                </tr>
+                <!-- /ko -->
+                <!-- ko foreach: Movs -->
+                <tr data-bind="using: mov, class: $root.MovStatus(type)">
+                    <td data-bind="text: $parents[1].formatDate(data)"></td>
+                    <td data-bind="text: pessoa.nome"></td>
                     <td data-bind="text: descricao"></td>
                     <td data-bind="text: $root.formatNumber(valor)"></td>
                     <td class="crud-control flex-right-center flex-center-children">
                         <a type="button" class="btn btn-outline-info p-1" href=""
-                           data-bind="attr: { href: 'Movimentacoes/Details/' + id }">
+                            data-bind="click: () => $root.detalharMov($parent)"
+                        >
                             <span class="material-icons">&#xe88e;</span>
                         </a>
-                        <a type="button" class="btn btn-outline-primary p-1" href=""
-                           data-bind="attr: { href: 'Movimentacoes/Edit/' + id }">
+                        <button id="edit-mov-btn" type="button" class="btn btn-outline-primary p-1"
+                                data-bind="click: () => $root.editarMov($parent)">
                             <span class="material-icons">&#xe3c9;</span>
-                        </a>
-                        <button type="button" class="btn btn-outline-danger p-1"
-                                data-bind="click: $root.removerMovimentacao">
+                        </button>
+                        <button id="delete-mov-btn" type="button" class="btn btn-outline-danger p-1"
+                                data-bind="click: () => $root.removerMov($parent)">
                             <span class="material-icons">&#xe872;</span>
                         </button>
                     </td>
                 </tr>
+                <!-- /ko -->
             </tbody>
         </table>
     </div>

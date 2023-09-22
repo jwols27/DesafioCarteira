@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DesafioCarteira.Services
 {
-    public class MovimentacoesService : ICustomizableService<Movimentacao>
+    public class MovimentacoesService : IComplexService<Movimentacao>
     {
         private ISession _session;
 
@@ -51,7 +51,7 @@ namespace DesafioCarteira.Services
             }
         }
 
-        public async Task Remove<Trans> (int id) where Trans : Movimentacao
+        public async Task Remove<Trans> (int id, int pessoaId) where Trans : Movimentacao
         {
             ITransaction transaction = null;
 
@@ -60,15 +60,20 @@ namespace DesafioCarteira.Services
                 IsTypeValid<Trans>();
                 transaction = _session.BeginTransaction();
                 Trans mov = await _session.GetAsync<Trans>(id);
-                await _session.DeleteAsync(mov);
 
-                Pessoa pessoa = await _session.GetAsync<Pessoa>(mov.Id);
+                Pessoa pessoa = await _session.GetAsync<Pessoa>(mov.Pessoa.Id);
                 if (pessoa == null)
                     throw new NotFoundException("Pessoa não encontrada");
 
-                pessoa.Saldo = pessoa.Saldo - mov.Valor;
+                if (pessoaId != pessoa.Id)
+                    throw new NotFoundException("Acesso não autorizado");
 
-                await _session.UpdateAsync(pessoa);
+                double novoSaldo = pessoa.Saldo - mov.Valor;
+
+                pessoa.Saldo = novoSaldo;
+
+                await _session.DeleteAsync(mov);
+                await _session.MergeAsync(pessoa);
 
                 await transaction.CommitAsync();
             }
@@ -84,7 +89,7 @@ namespace DesafioCarteira.Services
             }
         }
 
-        public async Task Update(Movimentacao mov)
+        public async Task Update(Movimentacao mov, int pessoaId)
         {
             ITransaction transaction = null;
 
@@ -92,22 +97,24 @@ namespace DesafioCarteira.Services
             {
                 IsTypeValid(mov.GetType());
                 transaction = _session.BeginTransaction();
-                if (mov is Entrada)
-                    await _session.UpdateAsync(mov as Entrada);
-                if (mov is Saida)
-                    await _session.UpdateAsync(mov as Saida);
 
                 Pessoa pessoa = await _session.GetAsync<Pessoa>(mov.Id);
                 if (pessoa == null)
                     throw new NotFoundException("Pessoa não encontrada");
 
-                
+                if (pessoaId != pessoa.Id)
+                    throw new NotFoundException("Acesso não autorizado");
 
                 Type antigoType = mov.GetType();
                 Movimentacao antigo = await _session.GetAsync(antigoType, mov.Id) as Movimentacao;
 
                 pessoa.Saldo = pessoa.Saldo + mov.Valor - antigo.Valor;
 
+                if (mov is Entrada)
+                    await _session.UpdateAsync(mov as Entrada);
+                if (mov is Saida)
+                    await _session.UpdateAsync(mov as Saida);
+                
                 await _session.UpdateAsync(pessoa);
 
                 await transaction.CommitAsync();
@@ -125,12 +132,14 @@ namespace DesafioCarteira.Services
         }
 
 
-        public async Task<Trans> FindById<Trans>(int id)
+        public async Task<Trans> FindById<Trans>(int id, int pessoaId) where Trans : Movimentacao
         {
             try
             {
-                IsTypeValid<Trans>();
-                return await _session.GetAsync<Trans>(id);
+                var trans = await _session.GetAsync<Trans>(id);
+                if (pessoaId != trans.Pessoa.Id)
+                    throw new UnauthorizedAccessException("Acesso não autorizado");
+                return trans;
             }
             catch (InvalidOperationException e)
             {
@@ -140,19 +149,22 @@ namespace DesafioCarteira.Services
             return default;
         }
 
-        public async Task<IEnumerable<Movimentacao>> FindAll()
+        public async Task<IEnumerable<Movimentacao>> FindAllById(int pessoaId)
         {
-            IEnumerable<Entrada> entradas = await FindAll<Entrada>();
-            IEnumerable<Saida> saidas = await FindAll<Saida>();
-            return entradas.Concat<Movimentacao>(saidas);
+            IEnumerable<Entrada> entradas = await FindAllById<Entrada>(pessoaId);
+            IEnumerable<Saida> saidas = await FindAllById<Saida>(pessoaId);
+            return entradas.Concat<Movimentacao>(saidas)
+                .OrderByDescending(t => t.Data);
         }
 
-        public async Task<IEnumerable<Trans>> FindAll<Trans>()
+        public async Task<IEnumerable<Trans>> FindAllById<Trans>(int pessoaId) where Trans : Movimentacao
         {
             try
             {
-                IsTypeValid<Trans>();
-                return await _session.Query<Trans>().ToListAsync();
+                return await _session.Query<Trans>()
+                    .Where(t => t.Pessoa.Id == pessoaId)
+                    .OrderByDescending(t => t.Data)
+                    .ToListAsync();
             }
             catch (InvalidOperationException e)
             {
@@ -163,14 +175,20 @@ namespace DesafioCarteira.Services
         }
 
 
-        public async Task<bool> HasAny() => await _session.Query<Movimentacao>().AnyAsync();
+        public async Task<bool> HasAny(int pessoaId)
+        {
+            bool n1 = await HasAny<Entrada>(pessoaId);
+            bool n2 = await HasAny<Saida>(pessoaId);
+            return n1 || n2;
+        }
+            
 
-        public async Task<bool> HasAny<Trans>()
+        public async Task<bool> HasAny<Trans>(int pessoaId) where Trans : Movimentacao
         {
             try
             {
                 IsTypeValid<Trans>();
-                return await _session.Query<Trans>().AnyAsync();
+                return await _session.Query<Trans>().AnyAsync(t => t.Pessoa.Id == pessoaId);
             }
             catch (InvalidOperationException e)
             {

@@ -1,4 +1,4 @@
-﻿@model DesafioCarteira.Models.Movimentacao 
+﻿@model DesafioCarteira.Models.Movimentacao
 @{
     ViewData["Title"] = "Carteira";
 }
@@ -19,13 +19,15 @@
                 <button class="btn btn-primary" data-bind="click: () => FazerMovimentacao(!FazerMovimentacao())">
                     Movimentar
                 </button>
-                <button class="btn btn-secondary">Consultar</button>
+                <a type="button" class="btn btn-secondary" asp-controller="Movimentacoes" asp-action="Index">
+                    Consultar
+                </a>
             </div>
         </div>
     </div>
     <div data-bind="fadeSlide: FazerMovimentacao()">
         <div class="card p-4">
-            <strong>Novo movimentacao</strong>
+            <strong>Nova movimentação</strong>
             <form id="movimentacao-form" data-bind="using: Movimentacao">
                 <input type="hidden" data-bind="value: $root.SelectedPessoa" />
                 <div class="form-group">
@@ -59,8 +61,7 @@
             <div class="my-2 form-group" data-bind="fadeVisible: SelectedPessoa()">
                 <label class="control-label mb-2"><strong>Pessoa</strong></label>
                 <select class="form-select form-control"
-                        data-bind=
-                        "options: Pessoas, optionsText: displayOption,
+                        data-bind="options: Pessoas, optionsText: displayOption,
                         optionsCaption: SelectedPessoa() ? undefined : 'Selecionar pessoa',
                         value: SelectedPessoa, valueAllowUnset: true, event: { change: updatePessoaInfo }">
                 </select>
@@ -82,8 +83,8 @@
 
 <partial name="~/Views/Shared/Modals/ConfirmModal.cshtml" />
 
-<script src="~/js/viewmodels/MovimentacaoVM.js"></script>
-<script src="~/js/viewmodels/CarteiraVM.js"></script>
 <script src="~/js/requests/MovimentacoesRequests.js"></script>
 <script src="~/js/requests/PessoasRequests.js"></script>
+<script src="~/js/viewmodels/MovimentacaoVM.js"></script>
+<script src="~/js/viewmodels/CarteiraVM.js"></script>
 <script src="~/js/pages/CarteiraIndex.js"></script>

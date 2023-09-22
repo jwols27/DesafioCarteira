@@ -40,7 +40,13 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="align-middle" data-bind="foreach: Pessoas">
+            <tbody class="align-middle">
+                <!-- ko ifnot: Pessoas().length > 0 -->
+                <tr>
+                    <td align="center" colspan="5">Nenhuma movimentação encontrada</td>
+                </tr>
+                <!-- /ko -->
+                <!-- ko foreach: Pessoas -->
                 <tr>
                     <td data-bind="text: id"></td>
                     <td data-bind="text: nome"></td>
@@ -59,12 +65,12 @@
                             <span class="material-icons">&#xe3c9;</span>
                         </a>
                         <button type="button" class="btn btn-outline-danger p-1"
-                                data-bind="click: $root.removerPessoa"        
-                        >
+                                data-bind="click: $root.removerPessoa">
                             <span class="material-icons">&#xe872;</span>
                         </button>
                     </td>
                 </tr>
+                <!-- /ko -->
             </tbody>
         </table>
     </div>
