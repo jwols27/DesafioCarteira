@@ -43,7 +43,12 @@
     }
 
     self.editarMov = function (movimento) {
-        console.log(mov);
+        const { mov, type } = movimento;
+        console.log(mov)
+        try {
+            window.location.href = '/Movimentacoes/Edit/' + mov.id
+                + '?pessoaId=' + localStorage.getItem('pessoaId') + '&type=' + type;
+        } catch (e) {}
     }
 
     self.removerMov = function (movimento) {

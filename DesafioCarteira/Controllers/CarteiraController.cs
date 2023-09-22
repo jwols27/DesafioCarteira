@@ -36,7 +36,12 @@ namespace DesafioCarteira.Controllers
 
                 await _movimentacoesService.Add(entrada);
 
-                return Json(new { pessoaId = entrada.Pessoa.Id });
+                return Json(
+                    new
+                    {
+                        pessoaId = entrada.Pessoa.Id,
+                        saldoNovo = entrada.Pessoa.Saldo
+                    }) ;
             }
             catch (Exception e)
             {
@@ -60,7 +65,12 @@ namespace DesafioCarteira.Controllers
 
                 await _movimentacoesService.Add(saida);
 
-                return Json(new { pessoaId = saida.Pessoa.Id });
+                return Json(
+                    new
+                    {
+                        pessoaId = saida.Pessoa.Id,
+                        saldoNovo = saida.Pessoa.Saldo
+                    });
             }
             catch (Exception e)
             {

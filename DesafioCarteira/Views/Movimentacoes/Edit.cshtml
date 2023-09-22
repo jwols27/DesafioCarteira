@@ -1,0 +1,47 @@
+﻿@model DesafioCarteira.Models.ViewModels.TypedMov
+@{
+    ViewData["Title"] = "Editando " + Model.ExtMov() + " " + Model.Mov.Id;
+}
+
+<div id="editar-mov-view" class="main-container">
+    <div class="card p-4">
+        <h2>@ViewData["Title"]</h2>
+        <form id="movimentacao-form">
+            <input type="hidden" data-bind="value: Id" />
+            <input type="hidden" data-bind="value: Pessoa" />
+            <div class="form-group">
+                <label asp-for="Mov.Data" class="control-label"></label>
+                <input id="Data" asp-for="Mov.Data" data-bind="value: Data" class="form-control" />
+                <span id="DataError" class="text-danger small form-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mov.Descricao" class="control-label"></label>
+                <input id="Descricao" asp-for="Mov.Descricao" data-bind="value: Descricao" class="form-control" />
+                <span id="DescricaoError" class="text-danger small form-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mov.Valor" class="control-label"></label>
+                <input id="Valor" asp-for="Mov.Valor" data-bind="value: Valor" class="form-control" />
+                <span id="ValorError" class="text-danger small form-error"></span>
+            </div>
+            <div class="button-control">
+                <button id="btn-salvar-edit" type="submit" class="btn btn-primary">Salvar</button>
+                <a type="button" class="btn btn-outline-primary" asp-action="Index">Voltar</a>
+            </div>
+            <div class="form-group">
+                <span id="Extra" class="text-danger small form-error"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var movJson = @Html.Raw(Json.Serialize(Model));
+</script>
+
+<script src="~/js/requests/MovimentacoesRequests.js"></script>
+<script src="~/js/viewmodels/MovimentacaoVM.js"></script>
+<script src="~/js/viewmodels/MovimentacaoEditVM.js"></script>
+<script src="~/js/pages/MovimentacaoEdit.js"></script>
+
+<script src="~/js/requests/form-validation.js"></script>

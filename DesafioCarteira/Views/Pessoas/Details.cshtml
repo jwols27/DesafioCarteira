@@ -3,60 +3,64 @@
     ViewData["Title"] = Model.Nome + " Detalhes";
 }
 
-<div class="card border-primary">
-    <div class="card-header bg-primary text-white">
-        <h4 class="card-title m-0">@Model.Nome</h4>
-    </div>
-    <dl class="card-body row m-0">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10" id="pessoa-id">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Salario)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Salario)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Limite)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Limite)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Minimo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Minimo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Saldo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Saldo)
-        </dd>
+<div class="main-container">
 
-    </dl>
-</div>
-<div class="mt-2 d-flex">
-    <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
-    <button id="confirmar-deletar-pessoa" class="ms-1 btn btn-danger text-white">Deletar</button>
-    <a type="button" class="ms-auto btn btn-outline-dark" asp-action="Index">Início</a>
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title m-0">@Model.Nome</h4>
+        </div>
+        <dl class="card-body row m-0">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10" id="pessoa-id">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Salario)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Salario)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Limite)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Limite)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Minimo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Minimo)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Saldo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Saldo)
+            </dd>
+
+        </dl>
+    </div>
+    <div class="mt-2 d-flex">
+        <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+        <button id="confirmar-deletar-pessoa" class="ms-1 btn btn-danger text-white">Deletar</button>
+        <a type="button" class="ms-auto btn btn-outline-dark" asp-action="Index">Início</a>
+    </div>
+
 </div>
 
 <script>

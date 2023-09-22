@@ -46,6 +46,22 @@ function postMovimentacao(movimentacao, tipo) {
     })
 }
 
+function editMovimentacao(mov, type) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/Movimentacoes/Edit/' + mov.Id,
+            type: 'POST',
+            data: { mov: JSON.stringify(mov), type },
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (xhr) {
+                ErrorModal.ShowModal(xhr);
+            }
+        });
+    })
+}
+
 function deleteMovimentacao(movId, pessoaId, type) {
     return new Promise(function (resolve, reject) {
         $.ajax({

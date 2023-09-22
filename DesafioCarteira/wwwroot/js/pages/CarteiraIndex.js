@@ -38,6 +38,18 @@
     }
 }
 
+function movimentar(tipo) {
+    let mov = createMovimentacao();
+    if (!mov) return;
+    postMovimentacao(mov, tipo)
+        .then((data) => {
+            Carteira.PessoaSaldo(data.saldoNovo);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
+
 $(document).ready(function () {
     $("#confirmar-deslogar").click(() => {
         let content = {
@@ -66,27 +78,6 @@ $(document).ready(function () {
     $("#movimentacao-form").submit((event) => {
         event.preventDefault();
     })
-
-    function movimentar(tipo) {
-        let mov = createMovimentacao();
-        if (!mov) return;
-        postMovimentacao(mov, tipo)
-            .then((data) => {
-                findPessoa(data.pessoaId)
-                    .then((data) => {
-                        console.log(data.pessoa);
-                        Carteira.SelectedPessoa().saldo = data.pessoa.saldo;
-                        Carteira.updatePessoaInfo();
-                        Carteira.Movimentacao.resetFields();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
 
     $("#btn-entrada").click(() => {
         movimentar('Entrada');

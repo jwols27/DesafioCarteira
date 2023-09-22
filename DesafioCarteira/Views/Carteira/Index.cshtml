@@ -25,24 +25,24 @@
             </div>
         </div>
     </div>
-    <div data-bind="fadeSlide: FazerMovimentacao()">
+    <div data-bind="fadeSlide: FazerMovimentacao() && SelectedPessoa()">
         <div class="card p-4">
             <strong>Nova movimentação</strong>
             <form id="movimentacao-form" data-bind="using: Movimentacao">
                 <input type="hidden" data-bind="value: $root.SelectedPessoa" />
                 <div class="form-group">
                     <label asp-for="Data" class="control-label"></label>
-                    <input asp-for="Data" data-bind="value: Data" class="form-control" />
+                    <input id="Data" asp-for="Data" data-bind="value: Data" class="form-control" />
                     <span id="DataError" class="text-danger small form-error"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Descricao" class="control-label"></label>
-                    <input asp-for="Descricao" data-bind="value: Descricao" class="form-control" />
+                    <input id="Descricao" asp-for="Descricao" data-bind="value: Descricao" class="form-control" />
                     <span id="DescricaoError" class="text-danger small form-error"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Valor" class="control-label"></label>
-                    <input asp-for="Valor" data-bind="value: Valor" class="form-control" />
+                    <input id="Valor" asp-for="Valor" data-bind="value: Valor" class="form-control" />
                     <span id="ValorError" class="text-danger small form-error"></span>
                 </div>
                 <div class="button-control set-flex-children">
@@ -88,3 +88,4 @@
 <script src="~/js/viewmodels/MovimentacaoVM.js"></script>
 <script src="~/js/viewmodels/CarteiraVM.js"></script>
 <script src="~/js/pages/CarteiraIndex.js"></script>
+<script src="~/js/requests/form-validation.js"></script>

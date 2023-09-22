@@ -108,14 +108,15 @@ namespace DesafioCarteira.Services
                 Type antigoType = mov.GetType();
                 Movimentacao antigo = await _session.GetAsync(antigoType, mov.Id) as Movimentacao;
 
-                pessoa.Saldo = pessoa.Saldo + mov.Valor - antigo.Valor;
+                double novoSaldo = pessoa.Saldo + mov.Valor - antigo.Valor;
+                pessoa.Saldo = novoSaldo;
 
                 if (mov is Entrada)
-                    await _session.UpdateAsync(mov as Entrada);
+                    await _session.MergeAsync(mov as Entrada);
                 if (mov is Saida)
-                    await _session.UpdateAsync(mov as Saida);
+                    await _session.MergeAsync(mov as Saida);
                 
-                await _session.UpdateAsync(pessoa);
+                await _session.MergeAsync(pessoa);
 
                 await transaction.CommitAsync();
             }

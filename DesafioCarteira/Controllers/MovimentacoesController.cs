@@ -4,6 +4,7 @@ using DesafioCarteira.Services;
 using DesafioCarteira.Services.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,39 +98,74 @@ namespace DesafioCarteira.Controllers
             }
         }
 
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TypedMov tmov, int pessoaId)
+        public async Task<IActionResult> Edit(int? id, int pessoaId, string type)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    throw new BadHttpRequestException("Erro de validação");
-                }
+                if (id == null)
+                    throw new BadHttpRequestException("ID não pode ser nulo");
 
-                if (id != tmov.Mov.Id)
-                    throw new BadHttpRequestException("Discrepância de IDs");
-
-                switch (tmov.Type)
+                Movimentacao mov;
+                switch (type)
                 {
                     case "E":
-                        await _movimentacoesService.Update(tmov.Mov as Entrada, pessoaId);
+                        mov = await _movimentacoesService.FindById<Entrada>(id.Value, pessoaId);
                         break;
                     case "S":
-                        await _movimentacoesService.Update(tmov.Mov as Saida, pessoaId);
+                        mov = await _movimentacoesService.FindById<Saida>(id.Value, pessoaId);
                         break;
                     default:
-                        throw new InvalidOperationException("Tipo inesperado: " + tmov.Type);
+                        throw new InvalidOperationException("Tipo inesperado: " + type);
+                }
+                if (mov == null)
+                    throw new NotFoundException("Movimentação não encontrada");
+
+                return View(new TypedMov(type, mov));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, string mov, string type)
+        {
+            Movimentacao converted;
+            try
+            {
+                switch (type)
+                {
+                    case "E":
+                        converted = JsonConvert.DeserializeObject<Entrada>(mov);
+                        break;
+                    case "S":
+                        converted = JsonConvert.DeserializeObject<Saida>(mov);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Tipo inesperado: " + type);
                 }
 
-                return RedirectToAction(nameof(Index));
+                if (id != converted.Id)
+                    throw new BadHttpRequestException("Discrepância de IDs");
+
+                int pessoaId = converted.Pessoa.Id;
+
+                await _movimentacoesService.Update(converted, pessoaId);
+
+                string url = Url.Action(nameof(Index));
+
+                return Json(new { redirectUrl = url });
             }
             catch (Exception)
             {
-                return View(tmov);
+                converted = JsonConvert.DeserializeObject<Movimentacao>(mov);
+                return View(new TypedMov(type, converted));
             }
-            
+
         }
 
         public async Task<IActionResult> Delete(int? id, int? pessoaId, string type)

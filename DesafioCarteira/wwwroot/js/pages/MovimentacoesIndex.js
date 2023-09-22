@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $("#movtype-group").change((x) => {
+        // TODO: CAHNGE
         getMovimentacoes(1, MovIndex.MovOption())
             .then((data) => {
                 console.log(data.movs);
