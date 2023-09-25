@@ -28,7 +28,8 @@ namespace DesafioCarteira.Services
         private void SeedPessoas()
         {
             IEnumerable<Pessoa> pessoas = new List<Pessoa>() {
-                new Pessoa("June Egbert", "eggjune@ska.ia", 4136.12, 1000.51, 100.0, 201.0)
+                new Pessoa("June Egbert", "eggjune@ska.ia", 4130, 1000, 125.0, 413.0),
+                new Pessoa("Jane Harley", "hawrley@ska.ia", 6120, 1000, 125.0, 612.0)
             };
 
             ITransaction transaction = null;

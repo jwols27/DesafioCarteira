@@ -36,6 +36,12 @@ body {
     position: relative;
 }
 
+.nav-link:focus,
+.nav-link:hover {
+    filter: brightness(110%) !important;
+    background-color: var(--bs-primary);
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
